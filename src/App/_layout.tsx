@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Stack } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import MenuLeft from "../components/menuCompos/MenuLeft";
-import MenuTop from "../components/menuCompos/MenuTop";
-
+import React, { useState } from "react"
+import { View, StyleSheet } from "react-native"
+import { Stack } from "expo-router"
+import { SafeAreaProvider } from "react-native-safe-area-context"
+import MenuLeft from "../components/basicCompos/menu/MenuLeft"
+import MenuTop from "../components/basicCompos/menu/MenuTop"
 const Layout = () => {
-  const [menuWidth, setMenuWidth] = useState(0);
+  const [menuWidth, setMenuWidth] = useState(0)
 
   return (
     <SafeAreaProvider>
@@ -26,13 +25,16 @@ const Layout = () => {
 
           {/* Stack chiếm phần còn lại */}
           <View style={[styles.stackContent, { marginLeft: menuWidth }]}>
-            <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+            <Stack
+              screenOptions={{ headerShown: false }}
+              initialRouteName="(tabs)"
+            />
           </View>
         </View>
       </View>
     </SafeAreaProvider>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -58,6 +60,6 @@ const styles = StyleSheet.create({
   stackContent: {
     flex: 1,
   },
-});
+})
 
-export default Layout;
+export default Layout
