@@ -7,12 +7,12 @@ import rectangle16_9 from "../../../assets/icons/aspect-ratio/rectangle-16_9.png
 import EditButtons from "./EditButton"
 
 interface RatioEditorProps {
-  onAspectRatioChange: (aspectRatio: string) => void
+  onAspectRatioChange: (aspectRatio: number) => void
 }
 
 const RatioEditor: React.FC<RatioEditorProps> = ({ onAspectRatioChange }) => {
   const handleAspectRatio = (newAspectRatio: string | undefined = "1") => {
-    onAspectRatioChange(newAspectRatio)
+    onAspectRatioChange(Function(`"use strict"; return (${newAspectRatio})`)())
   }
 
   const AspectRatioButtons = [
