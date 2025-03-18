@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image, Text } from "react-native"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import Background from "../../../assets/dashboardImage/background.png"
+import Background from "../../../assets/images/background.png"
 import { RFPercentage } from "react-native-responsive-fontsize"
 import { useState } from "react"
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { View, StyleSheet, ImageSourcePropType } from "react-native"
-import Image2 from "../../../assets/image/icons/image2.png"
-import Image3 from "../../../assets/image/icons/image3.png"
-import Image4 from "../../../assets/image/icons/image4.png"
-import Image5 from "../../../assets/image/icons/image5.png"
+import window_maximize from "../../../assets/icons/menu-top/window-maximize.png"
+import adjustments_horizontal from "../../../assets/icons/menu-top/adjustments-horizontal.png"
+import eraser from "../../../assets/icons/menu-top/eraser.png"
+import resize from "../../../assets/icons/menu-top/resize.png"
 import FrameButton from "./FrameButton"
 
 interface Tool {
@@ -15,10 +15,10 @@ const ToolMenu = () => {
   const [selectedTool, setSelectedTool] = useState(-1)
 
   const tools: Tool[] = [
-    { label: "Upscale", icon: Image2 },
-    { label: "Adjust", icon: Image3 },
-    { label: "Eraser", icon: Image4 },
-    { label: "Extend", icon: Image5 },
+    { label: "Upscale", icon: window_maximize },
+    { label: "Adjust", icon: adjustments_horizontal },
+    { label: "Eraser", icon: eraser },
+    { label: "Extend", icon: resize },
   ]
 
   return (

@@ -1,24 +1,33 @@
-import React, { useState } from "react";
-import { StyleSheet, View, SafeAreaView, ScrollView, Text, TouchableOpacity, Image, Dimensions } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useState } from "react"
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native"
+import { FontAwesome5 } from "@expo/vector-icons"
 
 interface Category {
-  name: string;
+  name: string
 }
 
 interface Filter {
-  name: string;
-  icon: string;
+  name: string
+  icon: string
 }
 
 interface GridImage {
-  uri: string | number;
-  height: number;
+  uri: string | number
+  height: number
   text?: {
-    title: string;
-    date: string;
-    description: string;
-  };
+    title: string
+    date: string
+    description: string
+  }
 }
 
 const categories: Category[] = [
@@ -28,41 +37,79 @@ const categories: Category[] = [
   { name: "Animals" },
   { name: "People" },
   { name: "Food & Drink" },
-  { name: "Arts & Culture" }
-];
+  { name: "Arts & Culture" },
+]
 
 const filters: Filter[] = [
   { name: "Recent", icon: "clock" },
   { name: "Hot", icon: "fire" },
-];
+]
 
 const gridData: GridImage[][] = [
   [
-    { uri: "https://img.freepik.com/premium-photo/display-beauty-products-with-bottle-liquid-shelf_192217-624.jpg?w=360", height: 500 },
-    { uri: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAxL3Jhd3BpeGVsb2ZmaWNlMV9zYXR1cm5faW5fdGhlX3N0eWxlX29mX3Bhc3RlbF9kcmVhbXlfY2hhcm1pbmdfd19hNTM4MGNkYi00ZGNmLTQzODYtYWEyZS03YzZlZDczNjI3ODRfMi5qcGc.jpg", height: 300 },
-    { uri: "https://img.freepik.com/premium-photo/hand-hold-like-button-icon-social-media-sign-chat-application-technology-community-background-banner-concept-3d-cartoon-illustration_56104-1740.jpg?w=360", height: 280 },
+    {
+      uri: "https://img.freepik.com/premium-photo/display-beauty-products-with-bottle-liquid-shelf_192217-624.jpg?w=360",
+      height: 500,
+    },
+    {
+      uri: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAxL3Jhd3BpeGVsb2ZmaWNlMV9zYXR1cm5faW5fdGhlX3N0eWxlX29mX3Bhc3RlbF9kcmVhbXlfY2hhcm1pbmdfd19hNTM4MGNkYi00ZGNmLTQzODYtYWEyZS03YzZlZDczNjI3ODRfMi5qcGc.jpg",
+      height: 300,
+    },
+    {
+      uri: "https://img.freepik.com/premium-photo/hand-hold-like-button-icon-social-media-sign-chat-application-technology-community-background-banner-concept-3d-cartoon-illustration_56104-1740.jpg?w=360",
+      height: 280,
+    },
   ],
   [
-    { uri: require("../../../assets/dashboardImage/AIImages/house.jpg"), height: 330 },
-    { uri: require("../../../assets/dashboardImage/AIImages/tree.jpg"), height: 300 },
-    { uri: require("../../../assets/dashboardImage/AIImages/ballon.jpg"), height: 400 },
+    {
+      uri: require("../../../assets/images/3d-renders/house.jpg"),
+      height: 330,
+    },
+    { uri: require("../../../assets/images/3d-renders/tree.jpg"), height: 300 },
+    {
+      uri: require("../../../assets/images/3d-renders/ballon.jpg"),
+      height: 400,
+    },
   ],
   [
-    { uri: "https://img.freepik.com/free-photo/easter-decorative-eggs-arrangement_23-2150245764.jpg", height: 450, text: { title: "Helen", date: "02.03.2023", description: "Save, share and use your image however you please." } },
-    { uri: "https://img.freepik.com/foto-premium/un-illustrazione-digitale-di-uno-stand-gastronomico-mco_852323-60.jpg", height: 300 },
-    { uri: require("../../../assets/dashboardImage/AIImages/tank.jpg"), height: 280 }
+    {
+      uri: "https://img.freepik.com/free-photo/easter-decorative-eggs-arrangement_23-2150245764.jpg",
+      height: 450,
+      text: {
+        title: "Helen",
+        date: "02.03.2023",
+        description: "Save, share and use your image however you please.",
+      },
+    },
+    {
+      uri: "https://img.freepik.com/foto-premium/un-illustrazione-digitale-di-uno-stand-gastronomico-mco_852323-60.jpg",
+      height: 300,
+    },
+    { uri: require("../../../assets/images/3d-renders/tank.jpg"), height: 280 },
   ],
   [
-    { uri: require("../../../assets/dashboardImage/AIImages/monkey.jpg"), height: 300 },
-    { uri: "https://img.freepik.com/premium-photo/chinese-asian-cartoon-background-illustrations-kids-cartoon-style-ai-generated_755721-1470.jpg", height: 250 },
-    { uri: "https://cdn.prod.website-files.com/61854e3ef69d07a1f22d8d6f/62278e0a0810f907e2d24955_instant-win-wink.jpg", height: 240 },
-    { uri: "https://img.freepik.com/free-photo/fantasy-landscape-with-gradient-cube_23-2149312128.jpg", height: 280 },
+    {
+      uri: require("../../../assets/images/3d-renders/monkey.jpg"),
+      height: 300,
+    },
+    {
+      uri: "https://img.freepik.com/premium-photo/chinese-asian-cartoon-background-illustrations-kids-cartoon-style-ai-generated_755721-1470.jpg",
+      height: 250,
+    },
+    {
+      uri: "https://cdn.prod.website-files.com/61854e3ef69d07a1f22d8d6f/62278e0a0810f907e2d24955_instant-win-wink.jpg",
+      height: 240,
+    },
+    {
+      uri: "https://img.freepik.com/free-photo/fantasy-landscape-with-gradient-cube_23-2149312128.jpg",
+      height: 280,
+    },
   ],
-];
+]
 
 const DashTwo: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState<string>("Recent");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<string>("Recent")
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,12 +210,18 @@ const DashTwo: React.FC = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f8f8f8", padding: 0 },
-  header: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10, alignItems: "center", marginLeft: 20 },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    alignItems: "center",
+    marginLeft: 20,
+  },
   categoryContainer: { flexDirection: "row", flex: 1 },
   categoryButton: { paddingHorizontal: 10, paddingVertical: 5 },
   categoryText: { fontSize: 16, color: "#333" },
@@ -176,10 +229,20 @@ const styles = StyleSheet.create({
   filterWrapper: {
     alignItems: "flex-end",
     paddingRight: 10,
-    paddingTop: 5
+    paddingTop: 5,
   },
-  filterContainer: { flexDirection: "row", borderRadius: 10, backgroundColor: "#F7F7F7", padding: 5 },
-  filterButton: { flexDirection: "row", alignItems: "center", padding: 8, borderRadius: 10 },
+  filterContainer: {
+    flexDirection: "row",
+    borderRadius: 10,
+    backgroundColor: "#F7F7F7",
+    padding: 5,
+  },
+  filterButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 10,
+  },
   activeFilterButton: { backgroundColor: "white" },
   filterText: { marginLeft: 5, color: "#333" },
   filterIcon: { marginRight: 5 },
@@ -189,11 +252,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexWrap: "wrap",
     gap: 10,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   column: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   overlay: {
     position: "absolute",
@@ -202,18 +265,18 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "white",
     padding: 8,
-    borderRadius: 5
+    borderRadius: 5,
   },
   overlayContainer: { flexDirection: "row" },
   overlayImage: {
     width: 25,
     height: 25,
     borderRadius: 20,
-    marginRight: 5
+    marginRight: 5,
   },
   overlayTitle: { color: "black", fontWeight: "bold", fontSize: 16 },
   overlayDate: { color: "black", fontSize: 14, marginLeft: 150 },
-  overlayDescription: { color: "black", fontSize: 14 }
-});
+  overlayDescription: { color: "black", fontSize: 14 },
+})
 
-export default DashTwo;
+export default DashTwo
