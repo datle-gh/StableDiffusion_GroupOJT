@@ -1,19 +1,23 @@
 import {
   FlatList,
-  Image,
+  LayoutChangeEvent,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native"
-import React, { useState, useEffect } from "react"
-import { Picker } from "@react-native-picker/picker"
+import React, { useState, useEffect, useMemo } from "react"
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import Ionicons from "react-native-vector-icons/Ionicons"
-import Fontisto from "react-native-vector-icons/Fontisto"
-import AntDesign from "react-native-vector-icons/AntDesign"
+import SortNew from "../basicCompos/SortNew"
+import ProjectList from "../basicCompos/ProjectList"
+import pencil_plus from "../../../assets/icons/component10/pencil-plus.png"
+import cloud_upload from "../../../assets/icons/component10/cloud-upload.png"
+import import_icon from "../../../assets/icons/component10/file-download.png"
+import DashboardButton from "../basicCompos/other/DashboardButton"
+import Card from "../basicCompos/other/Card"
+import { DisplayingType } from "../basicCompos/SortNew"
+import { RFPercentage } from "react-native-responsive-fontsize"
 
 interface Design {
   id: string
@@ -88,327 +92,222 @@ const designs: Design[] = [
     size: "4.76 MB",
     lastViewed: "5 days ago",
   },
+  {
+    id: "8",
+    imageUrl:
+      "https://kyluc.vn/userfiles/upload/images/modules/news/2016/7/11/0_hinh-anh-thien-nhien-dep-nhat-th-gioi.jpg",
+    name: "Panel Curtain",
+    edited: 2,
+    size: "4.76 MB",
+    lastViewed: "5 days ago",
+  },
+]
+
+const buttons = [
+  {
+    title: "New design",
+    icon: pencil_plus,
+    color: "#EBE7FE",
+    //route?
+  },
+  {
+    title: "Upload",
+    icon: cloud_upload,
+    color: "#E3F7C5",
+    //route?
+  },
+  {
+    title: "Import",
+    icon: import_icon,
+    color: "#FFE8D6",
+    //route?
+  },
 ]
 
 const MyProjectDetail = () => {
-  const [itemData, setItemData] = useState<Design[]>(designs)
-  //lưu trữ danh sách các item
-  const [data, setData] = useState<Design[]>(designs)
   //lưu trữ giá trị sort hiện tại
-  const [selectedSort, setSelectedSort] = useState<string>("newest")
-  //hàm xử lý lựa chọn của người dùng.
+  const [data, setData] = useState<Design[]>(designs)
+  //Kiểu hiển thị
+  const [displayType, setDisplayType] = useState<DisplayingType>("List")
 
-  const handleSort = (sortStype: string) => {
-    let sortedData = [...data]
-    switch (sortStype) {
-      case "newest":
-        sortedData.sort((a, b) => a.edited - b.edited)
-        setItemData(sortedData)
-        break
-      case "oldest":
-        sortedData.sort((a, b) => b.edited - a.edited)
-        break
-      default:
-        break
-    }
-    setData(sortedData)
-  }
+  const recentDesigns = useMemo(() => {
+    return data.filter((item) => item.edited <= 3)
+  }, [data])
 
-  useEffect(() => {
-    handleSort(selectedSort)
-  }, [])
-
-  //hàm xử lý khi người dùng thay đổi sort
-  function onChangeSortValue(value: string) {
-    setSelectedSort(value)
-    handleSort(value)
+  const [size, setSize] = useState({ width: 0, height: 0 })
+  const onLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout
+    setSize({ width, height })
   }
 
   return (
-    <ScrollView>
-      <View style={Style.Container}>
-        <View>
-          <TouchableOpacity style={Style.row}>
-            <FontAwesome6 name="angle-left" size={17} coler="#2F4F4F" />
-            <Text style={Style.Text1}>Project name</Text>
-          </TouchableOpacity>
-        </View>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      onLayout={onLayout}
+      style={styles.container}
+    >
+      {/*Project name */}
+      <TouchableOpacity style={styles.backButton}>
+        <FontAwesome6
+          name="angle-left"
+          size={size.width * 0.015}
+          color="#2F4F4F"
+        />
+        <Text style={styles.textProject}>Project name</Text>
+      </TouchableOpacity>
 
-        <View style={Style.Button2}>
-          <View style={Style.NewDesign}>
-            <TouchableOpacity style={Style.rowRow}>
-              <View style={Style.backgroundIcon}>
-                <MaterialCommunityIcons
-                  name="border-color"
-                  size={25}
-                  style={Style.Icon}
-                />
-              </View>
-              <Text style={Style.Text1}>New design</Text>
-              <MaterialCommunityIcons name="plus" size={25} />
-            </TouchableOpacity>
+      {/*Button*/}
+      <View style={styles.buttonContainer}>
+        {buttons.map((button, index) => (
+          <View style={styles.button} key={index}>
+            <DashboardButton
+              title={button.title}
+              icon={button.icon}
+              color={button.color}
+              onPress={() => console.log}
+            />
           </View>
+        ))}
+      </View>
 
-          <View style={Style.Upload}>
-            <TouchableOpacity style={Style.rowRow}>
-              <View style={Style.backgroundIcon}>
-                <Ionicons
-                  name="cloud-upload-outline"
-                  size={25}
-                  style={Style.Icon2}
-                />
-              </View>
-              <Text style={Style.Text1}>Upload</Text>
-              <MaterialCommunityIcons name="plus" size={25} />
-            </TouchableOpacity>
-          </View>
+      {/*Recent designs */}
+      <View style={styles.recentDesignContainer}>
+        <Text style={styles.subTitle}>Recent designs</Text>
+        <FlatList
+          horizontal
+          data={recentDesigns}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View
+              key={item.id}
+              style={[
+                styles.recentDesigns,
+                {
+                  width: size.width * 0.17,
+                  marginRight: size.width * 0.02,
+                },
+              ]}
+            >
+              <Card
+                label={item.name}
+                imageUrl={item.imageUrl}
+                lastDay={item.edited}
+              />
+            </View>
+          )}
+        />
+      </View>
 
-          <View style={Style.Import}>
-            <TouchableOpacity style={Style.rowRow}>
-              <View style={Style.backgroundIcon}>
-                <Fontisto name="import" size={23} style={Style.Icon3} />
-              </View>
-              <Text style={Style.Text1}>Import</Text>
-              <MaterialCommunityIcons name="plus" size={25} />
-            </TouchableOpacity>
-          </View>
-        </View>
+      {/*All design */}
+      <View style={styles.allDesign}>
+        <Text style={styles.subTitle}>All design</Text>
 
-        <View style={Style.RecentDesign}>
-          <Text style={Style.Text2}>Recent designs</Text>
-          <FlatList
-            horizontal
-            data={itemData}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              if (item.edited <= 3) {
-                return (
-                  <View style={{ paddingRight: 30, marginTop: 20 }}>
-                    <Image
-                      source={{ uri: item.imageUrl }}
-                      style={Style.ImageRecent}
-                    />
-                    <Text style={Style.Text3}>{item.name}</Text>
-                    <Text style={{ fontSize: 10 }}>
-                      Edited {item.edited} days ago
-                    </Text>
-                  </View>
-                )
-              }
-              return null
-            }}
+        <View style={styles.sortContainer}>
+          <SortNew
+            defaultDesigns={data}
+            defaultDisplayType={displayType}
+            onSorted={setData}
+            onDisplayTypeChange={setDisplayType}
           />
         </View>
 
-        <View style={Style.AllDesign}>
-          <Text style={Style.Text2}>All design</Text>
-          <View style={Style.buttonAllDesign}>
-            <Picker
-              style={Style.picker}
-              selectedValue={selectedSort}
-              onValueChange={onChangeSortValue}
-            >
-              <Picker.Item label="Sort: Newest first" value="newest" />
-              <Picker.Item label="Sort: Oldest first" value="oldest" />
-            </Picker>
-
-            <TouchableOpacity
-              style={[Style.borderIconAntDesign, { marginLeft: 1150 }]}
-            >
-              <AntDesign name="bars" size={27} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                Style.borderIconAntDesign,
-                { marginLeft: 20, paddingTop: 3, paddingLeft: 3 },
-              ]}
-            >
-              <AntDesign name="appstore-o" size={22} />
-            </TouchableOpacity>
+        {displayType === "List" ? (
+          <View style={styles.designList}>
+            <ProjectList projects={data} />
           </View>
-          <View style={Style.HeaderTable}>
-            <View style={[Style.Colum, { flex: 5 }]}>
-              <Text style={Style.TextHeaderTable}>Name</Text>
-            </View>
-            <View style={[Style.Colum, { flex: 2 }]}>
-              <Text style={Style.TextHeaderTable}>Size</Text>
-            </View>
-            <View style={[Style.Colum, { flex: 3 }]}>
-              <Text style={Style.TextHeaderTable}>Last viewed</Text>
-            </View>
+        ) : (
+          <View style={styles.designGrid}>
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
+              columnWrapperStyle={{ flexGrow: 1 }}
+              numColumns={4}
+              renderItem={({ item }) => (
+                <View style={styles.gridItem}>
+                  <Card
+                    label={item.name}
+                    imageUrl={item.imageUrl}
+                    lastDay={item.edited}
+                  />
+                </View>
+              )}
+            />
           </View>
-          <View>
-            {data.map((item) => (
-              <View style={Style.AllItem}>
-                <View style={[Style.Colum, { flex: 5 }]}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View>
-                      <Image
-                        source={{ uri: item.imageUrl }}
-                        style={Style.ImageOfAllItem}
-                      />
-                    </View>
-                    <View>
-                      <Text style={[Style.TextOfAllItem, { marginLeft: 15 }]}>
-                        {item.name}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={[Style.Colum, { flex: 2 }]}>
-                  <Text style={Style.TextOfAllItem}>{item.size}</Text>
-                </View>
-                <View style={[Style.Colum, { flex: 2 }]}>
-                  <Text style={Style.TextOfAllItem}>
-                    {item.edited} days ago
-                  </Text>
-                </View>
-                <TouchableOpacity style={[Style.Colum, { flex: 1 }]}>
-                  <AntDesign name="ellipsis1" size={20} />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        </View>
+        )}
       </View>
     </ScrollView>
   )
 }
 
-const Style = StyleSheet.create({
-  Container: {
-    flex: 1,
-    marginLeft: 40,
-    marginTop: 20,
-    marginBottom: 50,
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    height: "30%",
   },
-  row: {
+  backButton: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
   },
-  rowRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    justifyContent: "center",
-    marginTop: 18,
-  },
-  Text1: {
+  textProject: {
     fontFamily: "Arial",
-    fontSize: 13,
+    fontSize: RFPercentage(1.3),
   },
-  Button2: {
+  buttonContainer: {
     marginTop: 25,
     flexDirection: "row",
     alignItems: "center",
+    height: 80,
     gap: 30,
   },
-  NewDesign: {
+  button: {
     backgroundColor: "#EBE7FE",
-    width: 200,
-    height: 80,
+    width: "18%",
+    height: "100%",
     borderRadius: 10,
   },
-  backgroundIcon: {
-    backgroundColor: "#FFFFFF",
-    width: 45,
-    height: 45,
-    borderRadius: 30,
-  },
-  Icon: {
-    paddingLeft: 10,
-    paddingTop: 12,
-  },
-  Upload: {
-    backgroundColor: "#E3F7C5",
-    width: 200,
-    height: 80,
-    borderRadius: 10,
-  },
-  Icon2: {
-    paddingLeft: 11,
-    paddingTop: 10,
-  },
-  Import: {
-    backgroundColor: "#FFE8D6",
-    width: 200,
-    height: 80,
-    borderRadius: 10,
-  },
-  Icon3: {
-    paddingLeft: 15,
-    paddingTop: 10,
-  },
-  Text2: {
+  subTitle: {
     fontFamily: "Arial",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: RFPercentage(1.6),
+    marginBottom: 10,
   },
-  ImageRecent: {
-    width: 200,
-    height: 110,
-    borderRadius: 10,
-  },
-  Text3: {
-    fontFamily: "Arial",
-    fontWeight: "bold",
-    paddingTop: 10,
-    fontSize: 13,
-  },
-  RecentDesign: {
+  recentDesignContainer: {
     marginTop: 40,
+    height: "25%",
+    width: "100%",
+    maxHeight: 200,
   },
-  picker: {
-    width: 120,
-    height: 30,
-    borderColor: "#989898",
-    borderWidth: 1.2,
-    borderRadius: 10,
-    padding: 4,
-    fontSize: 11,
+  recentDesigns: {
+    height: "80%",
   },
-  AllItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    marginTop: 10,
-  },
-  ImageOfAllItem: {
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-  },
-  TextOfAllItem: {
-    fontFamily: "Arial",
-    fontSize: 11,
-    fontWeight: "bold",
-  },
-  AllDesign: {
+  allDesign: {
+    flex: 1,
     marginTop: 25,
+    height: "100%",
   },
-  buttonAllDesign: {
+  sortContainer: {
+    height: 60,
+  },
+  designList: {
+    flex: 1,
+    width: "100%",
+    height: "10%",
+  },
+  designGrid: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
-    marginTop: 12,
-    alignItems: "center",
-  },
-  borderIconAntDesign: {
-    width: 30,
-    height: 30,
-    borderColor: "#989898",
-    borderWidth: 1.2,
-    borderRadius: 7,
-  },
-  HeaderTable: {
-    flexDirection: "row",
-  },
-  TextHeaderTable: {
-    fontSize: 13,
-    marginTop: 15,
-    color: "#484848",
-  },
-  Colum: {
     justifyContent: "center",
+  },
+  gridItem: {
+    width: "15%",
+    height: "80%",
+    marginHorizontal: 50,
+    marginVertical: 70,
   },
 })
 
