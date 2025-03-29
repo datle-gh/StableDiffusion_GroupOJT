@@ -160,6 +160,7 @@ const styles = StyleSheet.create<Styles>({
     justifyContent: "space-between",
     paddingHorizontal: 10,
     paddingVertical: 10,
+    backgroundColor: "#f2f2f2",
   },
   leftContainer: {
     flexDirection: "column",

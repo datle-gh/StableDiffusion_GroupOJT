@@ -109,8 +109,9 @@ const MyProject = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#ffffff",
     justifyContent: "center",
+    borderRadius: 20,
   },
   sortContainer: {
     width: "100%",

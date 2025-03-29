@@ -16,14 +16,16 @@ const Banner = () => {
       <Image source={Background} style={styles.backgroundImage} />
       <View style={styles.overlay}>
         {/* Icon and circle */}
-        <View
-          style={styles.circle}
-          onLayout={(event) => {
-            const { width } = event.nativeEvent.layout
-            setParentWidth(width)
-          }}
-        >
-          <Ionicons name="sparkles" size={parentWidth * 0.3} color="black" />
+        <View style={styles.outerCircle}>
+          <View
+            style={styles.innerCircle}
+            onLayout={(event) => {
+              const { width } = event.nativeEvent.layout
+              setParentWidth(width)
+            }}
+          >
+            <Ionicons name="sparkles" size={parentWidth * 0.3} color="black" />
+          </View>
         </View>
 
         {/* Text */}
@@ -62,9 +64,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginLeft: 30,
   },
-  circle: {
-    backgroundColor: "#FFFFFF",
+  outerCircle: {
+    backgroundColor: "#ffffffbd",
     height: "120%",
+    aspectRatio: 1,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    elevation: 4,
+    marginRight: 16,
+  },
+  innerCircle: {
+    backgroundColor: "#FFFFFF",
+    height: "80%",
     aspectRatio: 1,
     borderRadius: 40,
     justifyContent: "center",
@@ -73,7 +87,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 4,
-    marginRight: 16,
   },
   textWrapper: { flex: 10 },
   title: {

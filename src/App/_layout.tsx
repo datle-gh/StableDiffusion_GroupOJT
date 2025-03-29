@@ -26,7 +26,9 @@ const Layout = () => {
           {/* Stack chiếm phần còn lại */}
           <View style={[styles.stackContent, { marginLeft: menuWidth }]}>
             <Stack
-              screenOptions={{ headerShown: false }}
+              screenOptions={{
+                headerShown: false,
+              }}
               initialRouteName="(tabs)"
             />
           </View>
@@ -39,7 +41,7 @@ const Layout = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#F2F2F2",
   },
   topSection: {
     width: "100%",
@@ -50,15 +52,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   menuContainer: {
-    position: "absolute", // Không làm ảnh hưởng đến Stack
+    position: "absolute",
     left: 0,
     top: 0,
     bottom: 0,
-    alignSelf: "flex-start", // Không mở rộng ra toàn bộ không gian
-    maxWidth: 280, // Giới hạn chiều rộng (hoặc có thể điều chỉnh phù hợp)
+    alignSelf: "flex-start",
+    maxWidth: 280,
   },
   stackContent: {
     flex: 1,
+    backgroundColor: "transparent",
   },
 })
 

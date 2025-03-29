@@ -192,14 +192,14 @@ const DashboardMain = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F5F5F5",
-    borderRadius: 10,
+    backgroundColor: "#ffffff",
     height: "100%",
     width: "100%",
+    borderRadius: 20,
   },
   backgroundSection: {
     marginBottom: 20,
-    height: "15%",
+    height: "17%",
     justifyContent: "center",
     alignContent: "center",
     padding: 30,
@@ -222,11 +222,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   recentContainer: {
-    marginTop: 30,
+    marginTop: 25,
     width: "100%",
   },
   projectList: {
     paddingHorizontal: 20,
+    maxHeight: 460,
   },
 })
 

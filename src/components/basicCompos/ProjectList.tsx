@@ -54,7 +54,7 @@ const ProjectList = ({ projects }: { projects: ProjectListProps[] }) => {
           </View>
         }
         renderItem={({ item }) => (
-          <View style={styles.allItem}>
+          <TouchableOpacity style={styles.allItem}>
             <View
               style={{ flex: 5, flexDirection: "row", alignItems: "center" }}
             >
@@ -79,7 +79,7 @@ const ProjectList = ({ projects }: { projects: ProjectListProps[] }) => {
             <TouchableOpacity style={{ flex: 1, alignItems: "flex-end" }}>
               <AntDesign name="ellipsis1" size={20} />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

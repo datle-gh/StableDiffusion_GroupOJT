@@ -9,7 +9,7 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native"
-import { useRouter } from 'expo-router'
+import { useRouter } from "expo-router"
 import AntDesign from "@expo/vector-icons/AntDesign"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import Feather from "@expo/vector-icons/Feather"
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     flexDirection: "row",
+    backgroundColor: "#F2F2F2",
   },
   menuItem: {
     flexDirection: "row",
