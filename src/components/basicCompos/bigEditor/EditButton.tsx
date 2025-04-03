@@ -17,7 +17,12 @@ interface ButtonProps {
 }
 
 /** EditButtons Component - Displays a group of animated selectable buttons with separators.
- * @param {ButtonProps[]} buttons - Array of ButtonProps objects to display as buttons
+ * @param {Object[]} buttons - Array of button objects to render
+ * @param {string} [buttons[].title] - Optional title of the button
+ * @param {ImageSourcePropType} [buttons[].icon] - Optional icon to display beside the title
+ * @param {string} buttons[].state - Unique state value associated with each button
+ * @param {(value: string | undefined) => void} onValueChange - Callback when the selected button changes
+ * @author Tien Dat
  */
 const EditButtons = ({
   buttons,
@@ -77,7 +82,13 @@ const EditButtons = ({
                 onValueChange(btn.state)
               }}
             >
-              {btn.icon && <Image source={btn.icon} style={styles.icon} />}
+              {btn.icon && (
+                <Image
+                  source={btn.icon}
+                  style={styles.icon}
+                  resizeMode="contain"
+                />
+              )}
               {btn.title && <Text style={styles.text}>{btn.title}</Text>}
             </TouchableOpacity>
           </View>
