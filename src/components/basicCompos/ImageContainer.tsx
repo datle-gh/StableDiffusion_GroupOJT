@@ -19,6 +19,8 @@ interface ImagePreviewProps {
   id: string
   uri: string | ImageSourcePropType
   info: ImageInfo
+  date: Date
+  showInfo?: boolean
 }
 
 /**
@@ -32,7 +34,12 @@ interface ImagePreviewProps {
  *   - `author`: {string} - Name of the image author.
  *   - `date`: {Date} - The date the image was posted.
  */
-const ImageContainer: React.FC<ImagePreviewProps> = ({ uri, info }) => {
+const ImageContainer: React.FC<ImagePreviewProps> = ({
+  uri,
+  info,
+  date,
+  showInfo,
+}) => {
   const [opacity] = useState(new Animated.Value(0))
   const { size, error } = useImageSize(uri)
 
@@ -80,27 +87,29 @@ const ImageContainer: React.FC<ImagePreviewProps> = ({ uri, info }) => {
           )}
 
           {/* Overlay with author info */}
-          <Animated.View style={[styles.overlay, { opacity }]}>
-            <View style={styles.infoBox}>
-              <View style={styles.authorBox}>
-                <Image
-                  source={handleImageUrlType(info.avatar)}
-                  style={[
-                    styles.authorImage,
-                    {
-                      width: parentSize.width * 0.12,
-                      height: parentSize.width * 0.12,
-                    },
-                  ]}
-                />
-                <Text style={styles.author}>{info.author}</Text>
+          {showInfo && (
+            <Animated.View style={[styles.overlay, { opacity }]}>
+              <View style={styles.infoBox}>
+                <View style={styles.authorBox}>
+                  <Image
+                    source={handleImageUrlType(info.owner.avatar)}
+                    style={[
+                      styles.authorImage,
+                      {
+                        width: parentSize.width * 0.12,
+                        height: parentSize.width * 0.12,
+                      },
+                    ]}
+                  />
+                  <Text style={styles.author}>{info.owner.name}</Text>
+                </View>
+                <Text style={styles.date}>{formatDate(date)}</Text>
               </View>
-              <Text style={styles.date}>{formatDate(info.date)}</Text>
-            </View>
-            <Text style={styles.message}>
-              Save, share and use your image however you please
-            </Text>
-          </Animated.View>
+              <Text style={styles.message}>
+                Save, share and use your image however you please
+              </Text>
+            </Animated.View>
+          )}
         </View>
       </Hoverable>
     </TouchableOpacity>
