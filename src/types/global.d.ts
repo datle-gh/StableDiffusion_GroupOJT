@@ -21,9 +21,9 @@ declare global {
   }
 
   interface ImageInfo {
-    avatar: Account["avatar"];
-    author: Account["name"];
-    date: Date;
+    owner: Account;
+    name: string;
+    prompt: string;
   }
 
   interface ImageType {
@@ -32,6 +32,7 @@ declare global {
     info: ImageInfo;
     categories: string[];
     loves: number;
+    date: Date;
   }
 }
 
